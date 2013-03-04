@@ -15,12 +15,12 @@ coord = []
 
 for i in range(0,250):
 	b = []
-	q = random.random()*250 + 75
-	w = random.random()*2*math.pi
-	e = random.random()*2*math.pi
-	b.append(int(q*math.cos(w)))
-	b.append(int(q*math.sin(w)))
-	b.append(int(q*math.sin(e)))
+	r = random.random()*250 + 75
+	theta = random.random()*2*math.pi
+	phi = random.random()*math.pi
+	b.append(int(r*math.sin(phi)*math.cos(theta)))
+	b.append(int(r*math.sin(phi)(math.sin(theta)))
+	b.append(int(r*math.cos(phi)))
 	coord.append(tuple(b))
 
 coord = set(coord)
