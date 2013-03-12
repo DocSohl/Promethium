@@ -7,8 +7,10 @@
           <Node name="Assembly-UnityScript" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True" selected="True" />
+              <Node name="Standard Assets" expanded="True" />
               <Node name="Standard Assets (Mobile)" expanded="True">
                 <Node name="Scripts" expanded="True" />
+                <Node name="Shaders" expanded="True" />
               </Node>
             </Node>
           </Node>

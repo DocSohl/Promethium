@@ -3,7 +3,7 @@ import random
 import math
 
 
-##Creates a random map using a spherical coordinate system then converses to cartesian and lastly writes to file
+##Creates a random map using a spherical coordinate system, converts to cartesian coordinates, and writes to file
 
 
 eff = open("coordinate.txt","w")
