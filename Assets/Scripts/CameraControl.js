@@ -22,6 +22,7 @@ function Update () {
 	var x = Input.GetAxis("Mouse X");
 	var y = Input.GetAxis("Mouse Y");
 	var mod = Input.GetKey(KeyCode.LeftShift);
+	var rightmouse = Input.GetMouseButton(1);
 //	Debug.Log("V: "+v+" - H: "+h+" - X: "+x+" - Y: "+y);
 //	Debug.Log(transform.eulerAngles.x);
 	forward = controller.transform.TransformDirection(Vector3.forward);
@@ -39,9 +40,11 @@ function Update () {
 //	controller.SimpleMove(forward*v*flySpeed*Time.deltaTime);
 //	controller.transform.Translate(forward.normalized*v*flySpeed*Time.deltaTime,Space.World);
 //	controller.transform.Translate(Vector3.right*h*flySpeed/2*Time.deltaTime,Space.Self);
-	controller.transform.Rotate(Vector3.up,x*turnSpeed,Space.World);
-	controller.transform.eulerAngles.z=0;
-	controller.transform.Rotate(Vector3.right,-y*turnSpeed,Space.Self);
+	if(rightmouse){
+		controller.transform.Rotate(Vector3.up,x*turnSpeed,Space.World);
+		controller.transform.eulerAngles.z=0;
+		controller.transform.Rotate(Vector3.right,-y*turnSpeed,Space.Self);
+	}
 	
 	//Debug.Log((transform.position.y-lastpoint)+", "+(Time.deltaTime*Time.deltaTime)+", "+(transform.position.y-lastpoint)/(Time.deltaTime*Time.deltaTime));
 	//lastpoint = transform.position.y;
