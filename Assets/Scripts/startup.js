@@ -3,7 +3,8 @@ import System.IO;
 
 var station : GameObject;
 var map = "\\Resources\\coordinateVersion Three.txt";
-var stations = new Array();
+static var stations = new Array();
+static var ships = new Array();
 
 function Start () {
 	//Test creation of a single testing station

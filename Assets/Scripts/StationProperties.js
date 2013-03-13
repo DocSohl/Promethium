@@ -1,15 +1,16 @@
 
 var StationName = "Station";
-var garrison = 0;
+var garrison = 10;
+var ship : GameObject;
 
 
 function Start () {
 	nameChange(StationName);
 	transform.name = StationName;
+	spawnShip();
 }
 
 function Update () {
-
 }
 
 function ShipsLand(num) {
@@ -23,4 +24,15 @@ function ShipsLeave(num) {
 function nameChange(newname){
 	StationName = newname;
 	transform.Find("Label").GetComponent(TextMesh).text = StationName;
+}
+
+function spawnShip(){ //temporary
+	if(garrison>0){
+		var stationnum = Random.RandomRange(0,startup.stations.length);
+		var newShip:GameObject = Instantiate(ship, transform.position, Quaternion.identity);
+		newShip.GetComponent(ShipProperties).source = gameObject;
+		newShip.GetComponent(ShipProperties).destination = startup.stations[stationnum];
+		startup.ships.Add(newShip);
+		ShipsLeave(1);
+	}
 }
