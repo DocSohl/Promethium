@@ -3,6 +3,7 @@ import System.IO;
 
 var station : GameObject;
 var map = "\\Resources\\coordinateVersion Three.txt";
+var stations = new Array();
 
 function Start () {
 	//Test creation of a single testing station
@@ -18,7 +19,7 @@ function createStation (position : System.String[]) {
 	var x = parseInt(position[0].Replace("\r",""));
 	var y = parseInt(position[1].Replace("\r",""));
 	var z = parseInt(position[2].Replace("\r",""));
-	Instantiate(station, Vector3 (x, y, z), Quaternion.identity);
+	stations.Add(Instantiate(station, Vector3 (x, y, z), Quaternion.identity));
 	
 }
 
