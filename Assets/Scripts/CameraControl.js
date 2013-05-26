@@ -9,10 +9,10 @@ var turnSpeed : float = 1;
 function Awake () {
 	if (!target){
 		target = camera;
-		Debug.Log("Camera Automatically Assigned as: "+target);
+//		Debug.Log("Camera Automatically Assigned as: "+target);
 	}
 	controller = target.collider;
-	Debug.Log("Found Collider: "+controller);
+//	Debug.Log("Found Collider: "+controller);
 }
 
 

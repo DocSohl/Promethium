@@ -5,11 +5,13 @@ var source : GameObject = null;
 var acceleration = 1; //unused
 var velocity = 1; //temporarily used instead of acceleration curves for simplicity
 var destline : LineRenderer;
+var startScript = null;
 
 function Start () {
 	nameChange(ShipName);
 	transform.name = ShipName;
 	destline = GetComponent(LineRenderer);
+	startScript = GameObject.Find("Startup").GetComponent(startup);	
 }
 
 function Update () {

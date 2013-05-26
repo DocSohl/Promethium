@@ -2,12 +2,12 @@
 var StationName = "Station";
 var garrison = 10;
 var ship : GameObject;
-
+//var startup : startup = GetComponent(startup);
 
 function Start () {
 	nameChange(StationName);
 	transform.name = StationName;
-	spawnShip();
+//	spawnShip();
 }
 
 function Update () {
