@@ -8,6 +8,8 @@ static var ships = new Array();
 var selected : GameObject = null;
 var infoboxstyle : GUIStyle;
 var cam : Camera;
+private var guipos : Vector3;
+private var commit : String;
 
 function Start () {
 	//Test creation of a single testing station
@@ -28,7 +30,7 @@ function createStation (position : System.String[]) {
 }
 
 function Update () {
-	if (Input.GetMouseButtonDown(0)){
+	if (Input.GetMouseButtonDown(0)&&!OverGUI()){
         var hit : RaycastHit;
         var ray : Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
  
@@ -47,6 +49,14 @@ function Update () {
     }
 }
 
+function OverGUI(){
+	var x = Input.mousePosition.x;
+	var y = Screen.height - Input.mousePosition.y;
+	var vertical = x>guipos.x-100&&x<guipos.x+100;
+	var horizontal = y>guipos.y+10&&y<guipos.y+110;
+	return vertical&&horizontal;
+}
+
 function ReadMap(map : String) {
     var sr = new StreamReader(Application.dataPath + "/" + map);
     var fileContents = sr.ReadToEnd();
@@ -58,6 +68,15 @@ function ReadMap(map : String) {
 
 function selectObject(obj : GameObject){
 	selected = obj;
+	commit = ships.ToString();
+	var ships : int;
+	if(selected.name=="Ship"){
+		ships = selected.GetComponent(ShipProperties).garrison;
+	}
+	else if(selected.name=="Station"){
+		ships = selected.GetComponent(StationProperties).garrison;
+	}
+	commit = ships.ToString();
 }
 
 function getSelected() : GameObject{
@@ -68,18 +87,23 @@ function OnGUI () {
 	if(selected==null){return;}
 	var context : String;
 	var ships : int;
-	var guipos = cam.WorldToScreenPoint(selected.transform.position);
+	guipos = cam.WorldToScreenPoint(selected.transform.position);
 	guipos.y = Screen.height-guipos.y;
+	GUI.BeginGroup(Rect(guipos.x-100, guipos.y+10, 200, 100));
 	if(selected.name=="Ship"){
 		ships = selected.GetComponent(ShipProperties).garrison;
-		context = "This fleet has:\n"+ships+" ship";
-		if(ships!=1){context+="s";}
-		GUI.Box(Rect(guipos.x-100, guipos.y+10, 200, 100), context, infoboxstyle);
+		context = "Strength:\n"+ships+" ship";
 	}
 	else if(selected.name=="Station"){
 		ships = selected.GetComponent(StationProperties).garrison;
-		context = "This fleet has:\n"+ships+" ship";
-		if(ships!=1){context+="s";}
-		GUI.Box(Rect(guipos.x-100, guipos.y+10, 200, 100), context, infoboxstyle);
+		context = "Garrison:\n"+ships+" ship";
 	}
+	if(ships!=1){context+="s";}
+	GUI.Box(Rect(0,0,200,100), context, infoboxstyle);
+	commit = GUI.TextField(Rect(120,5,60,40),commit,5);
+	if(GUI.Button(Rect(120,55,60,40),"Assign\nTroops")){
+//		int.TryParse(commit,ships);
+		print("Committing: "+commit);
+	}
+	GUI.EndGroup();
 }
