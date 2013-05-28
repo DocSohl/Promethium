@@ -1,17 +1,18 @@
 #pragma strict
 import System.IO;
 
-var station : GameObject;
-var map = "\\Resources\\coordinateVersion Three.txt";
-static var stations = new Array();
-static var ships = new Array();
-var selected : GameObject = null;
-var infoboxstyle : GUIStyle;
-var cam : Camera;
-private var guipos : Vector3;
-private var commit : String;
+var cam : Camera; //The player camera object
+var station : GameObject; //PreFab station style
+var map = "\\Resources\\coordinateVersion Three.txt"; //Map data to load from
+static var stations = new Array(); //List of all stations in the map
+static var ships = new Array(); //List of all ships in the map
 
-function Start () {
+private var selected : GameObject = null; //The currently clicked and selected object
+private var commit : String; //The number of ships committed from the Selected Objects Box
+private var mouseoverobject : GameObject = null; //The mouseover object
+
+
+function Start () { //Run on true game startup
 	//Test creation of a single testing station
 	var positions = ReadMap(map);
 	for (position in positions) {
@@ -30,30 +31,34 @@ function createStation (position : System.String[]) {
 }
 
 function Update () {
-	if (Input.GetMouseButtonDown(0)&&!OverGUI()){
-        var hit : RaycastHit;
-        var ray : Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
- 
-        if (Physics.Raycast(ray, hit))
-        {
-        	var clicked = hit.transform.gameObject;
-			if(hit.transform.name=="Body"){
-				clicked = hit.transform.parent.gameObject;
+	var hit : RaycastHit;
+    var ray : Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+	var ogui : boolean = OverGUI();
+	if(!ogui){
+	    if (Physics.Raycast(ray, hit)){ //Check if the RayCast hits an object
+        	var obj = hit.transform.gameObject;
+			if(hit.transform.name=="Body"){ //Some objects have separate Body subcomponents (stations, etc)
+				obj = hit.transform.parent.gameObject;
 			}
-//    		Debug.Log(clicked.transform.name);
-			selectObject(clicked);
-        }
-        else{
-        	selectObject(null);
-        }
-    }
+	    	if (Input.GetMouseButtonDown(0)){ //Select the object if the mouse is clicked
+				selectObject(obj);
+	    	}
+	    	else{ //Otherwise activate mouseover
+	    		mouseoverobject = obj;
+	    		mousebox.pos = obj.transform.position;
+	    	}
+	    }
+	    else if(Input.GetMouseButtonDown(0)){
+	    	selectObject(null);
+	    }
+	}
 }
 
-function OverGUI(){
+function OverGUI() : boolean{ //Check whether the mouse is currently over the GUI
 	var x = Input.mousePosition.x;
 	var y = Screen.height - Input.mousePosition.y;
-	var vertical = x>guipos.x-100&&x<guipos.x+100;
-	var horizontal = y>guipos.y+10&&y<guipos.y+110;
+	var vertical = x>infobox.pos.x-100&&x<infobox.pos.x+100;
+	var horizontal = y>infobox.pos.y+10&&y<infobox.pos.y+110;
 	return vertical&&horizontal;
 }
 
@@ -68,15 +73,16 @@ function ReadMap(map : String) {
 
 function selectObject(obj : GameObject){
 	selected = obj;
+	if(selected==null||(selected.name!="Ship"&&selected.name!="Station")){selected=null;return;}
 	commit = ships.ToString();
-	var ships : int;
+	var tempships : int;
 	if(selected.name=="Ship"){
-		ships = selected.GetComponent(ShipProperties).garrison;
+		tempships = selected.GetComponent(ShipProperties).garrison;
 	}
 	else if(selected.name=="Station"){
-		ships = selected.GetComponent(StationProperties).garrison;
+		tempships = selected.GetComponent(StationProperties).garrison;
 	}
-	commit = ships.ToString();
+	commit = tempships.ToString();
 }
 
 function getSelected() : GameObject{
@@ -84,26 +90,53 @@ function getSelected() : GameObject{
 }
 
 function OnGUI () {
-	if(selected==null){return;}
+	if(selected!=null){ //Selected Object Box
+		infobox.drawGUI();
+	}
+	if(mouseoverobject!=null){
+		mousebox.drawGUI();
+	}
+	
+}
+
+
+
+class GUIObject{
+	public var pos : Vector3;
+	public var style : GUIStyle;
+	public var drawGUI = function(){return;};
+}
+
+var infobox = new GUIObject();
+var mousebox = new GUIObject();
+
+infobox.drawGUI = function(){
 	var context : String;
-	var ships : int;
-	guipos = cam.WorldToScreenPoint(selected.transform.position);
-	guipos.y = Screen.height-guipos.y;
-	GUI.BeginGroup(Rect(guipos.x-100, guipos.y+10, 200, 100));
+	var tempships : int;
+	infobox.pos = cam.WorldToScreenPoint(selected.transform.position);
+	infobox.pos.y = Screen.height-infobox.pos.y;
+	GUI.BeginGroup(Rect(infobox.pos.x-100, infobox.pos.y+10, 200, 500)); 
 	if(selected.name=="Ship"){
-		ships = selected.GetComponent(ShipProperties).garrison;
-		context = "Strength:\n"+ships+" ship";
+		tempships = selected.GetComponent(ShipProperties).garrison;
+		context = "Strength:\n"+tempships+" ship";
 	}
 	else if(selected.name=="Station"){
-		ships = selected.GetComponent(StationProperties).garrison;
-		context = "Garrison:\n"+ships+" ship";
+		tempships = selected.GetComponent(StationProperties).garrison;
+		context = "Garrison:\n"+tempships+" ship";
 	}
-	if(ships!=1){context+="s";}
-	GUI.Box(Rect(0,0,200,100), context, infoboxstyle);
+	if(tempships!=1){context+="s";}
+	GUI.Box(Rect(0,0,200,100), context, infobox.style);
 	commit = GUI.TextField(Rect(120,5,60,40),commit,5);
 	if(GUI.Button(Rect(120,55,60,40),"Assign\nTroops")){
-//		int.TryParse(commit,ships);
 		print("Committing: "+commit);
 	}
 	GUI.EndGroup();
-}
+};
+
+mousebox.drawGUI = function(){
+	mousebox.pos.y = Screen.height - mousebox.pos.y;
+//	GUI.BeginGroup(Rect(mousebox.pos.x, mousebox.pos.y,0.125*w,0.083*h));
+//	
+//	GUI.EndGroup();
+	mouseoverobject = null;
+};

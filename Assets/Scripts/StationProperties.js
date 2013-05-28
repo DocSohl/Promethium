@@ -2,6 +2,8 @@
 var StationName = "Station";
 var garrison = 10;
 var ship : GameObject;
+var owner : String = "AI";
+
 //var startup : startup = GetComponent(startup);
 
 function Start () {

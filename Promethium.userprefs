@@ -2,10 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\startup.js">
     <Files>
-      <File FileName="Assets\Scripts\ShipProperties.js" Line="8" Column="24" />
-      <File FileName="Assets\Scripts\startup.js" Line="106" Column="22" />
-      <File FileName="Assets\Scripts\StationProperties.js" Line="10" Column="13" />
-      <File FileName="Assets\Scripts\CameraControl.js" Line="15" Column="18" />
+      <File FileName="Assets\Scripts\startup.js" Line="121" Column="45" />
+      <File FileName="Assets\Scripts\ShipProperties.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\StationProperties.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraControl.js" Line="1" Column="1" />
       <File FileName="Assets\Scripts\LookAtCamera.js" Line="1" Column="1" />
     </Files>
     <Pads>
@@ -15,17 +15,6 @@
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
                 <Node name="startup.js" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="Assembly-UnityScript-firstpass" expanded="True">
-            <Node name="Assets" expanded="True">
-              <Node name="Standard Assets" expanded="True">
-                <Node name="Character Controllers" expanded="True">
-                  <Node name="Sources" expanded="True">
-                    <Node name="Scripts" expanded="True" />
-                  </Node>
-                </Node>
               </Node>
             </Node>
           </Node>
