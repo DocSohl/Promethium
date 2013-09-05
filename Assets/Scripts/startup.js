@@ -136,7 +136,6 @@ infobox.drawGUI = function(){
 mousebox.drawGUI = function(){
 	mousebox.pos.y = Screen.height - mousebox.pos.y;
 //	GUI.BeginGroup(Rect(mousebox.pos.x, mousebox.pos.y,0.125*w,0.083*h));
-//	
 //	GUI.EndGroup();
 	mouseoverobject = null;
 };
