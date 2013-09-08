@@ -34,6 +34,7 @@ function Update () {
 	var hit : RaycastHit;
     var ray : Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 	var ogui : boolean = OverGUI();
+
 	if(!ogui){
 	    if (Physics.Raycast(ray, hit)){ //Check if the RayCast hits an object
         	var obj = hit.transform.gameObject;
@@ -52,6 +53,7 @@ function Update () {
 	    	selectObject(null);
 	    }
 	}
+
 }
 
 function OverGUI() : boolean{ //Check whether the mouse is currently over the GUI
@@ -90,8 +92,11 @@ function getSelected() : GameObject{
 }
 
 function OnGUI () {
+	button.drawGUI();
+
 	if(selected!=null){ //Selected Object Box
 		infobox.drawGUI();
+
 	}
 	if(mouseoverobject!=null){
 		mousebox.drawGUI();
@@ -132,6 +137,88 @@ infobox.drawGUI = function(){
 	}
 	GUI.EndGroup();
 };
+
+
+var button = new GUIObject();
+var buttonWidthPos = 0;
+var buttonHeightPos = .95;
+var buttonHeight = .05;
+var buttonWidth = .125;
+
+button.drawGUI = function(){
+	//button 1 station, don't be mad, haven't thought of a smart way to put it into a loop yet.
+	var content : String;
+	button.pos.x = 0;
+	button.pos.y = Screen.height*buttonHeightPos;
+	//screen.width * .125 = predetermined width of this particular button, screen.height * .05 = predetermined height for this row of buttons
+	GUI.BeginGroup(Rect(button.pos.x, button.pos.y, Screen.width*.125, Screen.height*.05));
+	content = "station";
+	GUI.Box(Rect(0,0,Screen.width*buttonWidth,Screen.height*buttonHeight), content, button.style);
+	GUI.EndGroup();
+	
+	//button 2 empire stats
+	button.pos.x += Screen.width*buttonWidth;
+	button.pos.y = Screen.height*buttonHeightPos;
+	GUI.BeginGroup(Rect(button.pos.x, button.pos.y, Screen.width*.125, Screen.height*.05));
+	content = "empire stats";
+	GUI.Box(Rect(0,0,Screen.width*buttonWidth,Screen.height*buttonHeight), content, button.style);
+	GUI.EndGroup();
+	
+	//button 3 interfaces
+	button.pos.x += Screen.width*buttonWidth;
+	button.pos.y = Screen.height*buttonHeightPos;
+	GUI.BeginGroup(Rect(button.pos.x, button.pos.y, Screen.width*.125, Screen.height*.05));
+	content = "player interfaces";
+	GUI.Box(Rect(0,0,Screen.width*buttonWidth,Screen.height*buttonHeight), content, button.style);
+	GUI.EndGroup();
+	
+	//button 4 attack planner
+	button.pos.x += Screen.width*buttonWidth;
+	button.pos.y = Screen.height*buttonHeightPos;
+	GUI.BeginGroup(Rect(button.pos.x, button.pos.y, Screen.width*.125, Screen.height*.05));
+	content = "attack planner";
+	GUI.Box(Rect(0,0,Screen.width*buttonWidth,Screen.height*buttonHeight), content, button.style);
+	GUI.EndGroup();
+	
+	//button 5 ping
+	button.pos.x = Screen.width*.84375;
+	button.pos.y = Screen.height*buttonHeightPos;
+	GUI.BeginGroup(Rect(button.pos.x, button.pos.y, Screen.width*(.90625-.84375), Screen.height*.05)); 
+	content = "ping";
+	GUI.Box(Rect(0,0,Screen.width*buttonWidth,Screen.height*buttonHeight), content, button.style);
+	GUI.EndGroup();
+	
+	//button 6 server time
+	button.pos.x = Screen.width*.90625;
+	button.pos.y = Screen.height*buttonHeightPos;
+	GUI.BeginGroup(Rect(button.pos.x, button.pos.y, Screen.width*(1-.90625), Screen.height*.05));
+	content = "Server Time";
+	GUI.Box(Rect(0,0,Screen.width*buttonWidth,Screen.height*buttonHeight), content, button.style);
+	GUI.EndGroup();
+	
+	
+	
+	//not sure about how to approach naming if in loop without adding a bunch of if statements or doing lists which i also don't know in javascript
+	for (var i=0;i<8; i++){
+		if (i == 0){
+		button.pos.x = 0;
+		}
+		else{
+		button.pos.x += Screen.width*buttonWidth;
+		}
+		button.pos.y = Screen.height*.00001;
+		GUI.BeginGroup(Rect(button.pos.x, button.pos.y, Screen.width*.125, Screen.height*.05));
+		content = "n/a";
+		GUI.Box(Rect(0,0,Screen.width*buttonWidth,Screen.height*buttonHeight), content, button.style);
+		GUI.EndGroup();
+	}
+	
+	
+	
+	
+	
+};
+	
 
 mousebox.drawGUI = function(){
 	mousebox.pos.y = Screen.height - mousebox.pos.y;
